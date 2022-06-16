@@ -41,11 +41,10 @@ function App() {
         data.id.toString() === fc.id &&
         data.title.toLowerCase() === fc.title.toLowerCase()
       );
-      //return JSON.stringify(data).includes(fc.title);
-      // && (fc.title)?data.title.toLowerCase() === fc.title.toLowerCase():true
     });
     setData(res);
   };
+
   const dynamicSearch = (value) => {
     var res = dataCopy.filter((data) => {
       return JSON.stringify(data).includes(value);
@@ -57,6 +56,54 @@ function App() {
     setFC(FC);
   };
 
+  function StaticSearch() {
+    return (
+      <div className="static">
+        <h3> Static search</h3>
+        <label htmlFor="id">Id:</label>
+        <select
+          id="id"
+          value={fc.id}
+          onChange={(e) => updateFC("id", e.target.value)}
+        >
+          <option id="id_blank" value=""></option>
+          {dataCopy.map((data) => (
+            <option id={data.id} value={data.id}>
+              {data.id}
+            </option>
+          ))}
+        </select>
+        <label htmlFor="staticTitle">Title:</label>
+        <select
+          id="title"
+          value={fc.title}
+          onChange={(e) => updateFC("title", e.target.value)}
+        >
+          <option id="title_blank" value=""></option>
+          {dataCopy.map((data) => (
+            <option id={"title" + data.id} value={data.title}>
+              {data.title}
+            </option>
+          ))}
+        </select>
+        <button onClick={() => search()}>Search</button>
+        <button onClick={() => clear()}>clear</button>
+      </div>
+    );
+  }
+
+  function DynamicSearch() {
+    return (
+      <div className="dynamic">
+        <label htmlFor="title">Title:</label>
+        <input
+          type="text"
+          id="title"
+          onChange={(e) => dynamicSearch(e.target.value)}
+        />
+      </div>
+    );
+  }
   return (
     <div className="App">
       <div className="header">
@@ -64,68 +111,33 @@ function App() {
           <h1>TODO</h1>
         </div>
         <div className="searchBar">
-          <div className="static">
-            <label htmlFor="id">Id:</label>
-            <select
-              id="id"
-              value={fc.id}
-              onChange={(e) => updateFC("id", e.target.value)}
-            >
-              <option id="id_blank" value=""></option>
-              {dataCopy.map((data) => (
-                <option id={data.id} value={data.id}>
-                  {data.id}
-                </option>
-              ))}
-            </select>
-            <select
-              id="title"
-              value={fc.title}
-              onChange={(e) => updateFC("title", e.target.value)}
-            >
-              <option id="title_blank" value=""></option>
-              {dataCopy.map((data) => (
-                <option id={"title" + data.id} value={data.title}>
-                  {data.title}
-                </option>
-              ))}
-            </select>
-            <button onClick={() => search()}>Search</button>
-            <button onClick={() => clear()}>clear</button>
-          </div>
-          {/*<label htmlFor="cmpltd">Completed:</label>
-          <input type="radio" id="cmpltd" value={""} onChange={()=>console.log("hello")}/>*/}
-
-          <div className="dynamic">
-            <label htmlFor="title">Title:</label>
-            <input
-              type="text"
-              id="title"
-              onChange={(e) => dynamicSearch(e.target.value)}
-            />
-          </div>
+          <StaticSearch />
+          <DynamicSearch />
         </div>
       </div>
       <div className="body">
-      {data.length > 0 ? (
-        data.map((data) => (
-          <div key={data.id}>
-            <div
-              className="dataCard"
-            >
-              <p className="userId">{`ID: ${data.id}`}</p>
-              <p className="title">{`Title: ${data.title}`}</p>
-              <p className="completed" style ={(data.completed)? {color:"green"}:{color:"red"}}>{`isCompleted: ${data.completed.toString()}`}</p>
+        {data.length > 0 ? (
+          data.map((data) => (
+            <div key={data.id}>
+              <div className="dataCard">
+                <p className="userId">{`ID: ${data.id}`}</p>
+                <p className="title">{`Title: ${data.title}`}</p>
+                <p
+                  className="completed"
+                  style={data.completed ? { color: "green" } : { color: "red" }}
+                >{`isCompleted: ${data.completed.toString()}`}</p>
+              </div>
             </div>
-          </div>
-        ))
-      ) : (
-        <div>No record available</div>
-      )}
+          ))
+        ) : (
+          <div>No record available</div>
+        )}
       </div>
       <button
         disabled={dataCopy.length <= numOfTxns}
-        style={(dataCopy.length <= numOfTxns)?{hidden:true}:{hidden:false}}
+        style={
+          dataCopy.length <= numOfTxns ? { hidden: true } : { hidden: false }
+        }
         onClick={() => loadMoreData()}
       >
         Load More
