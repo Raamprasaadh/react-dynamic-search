@@ -27,13 +27,13 @@
 .App-link {
   color: #61dafb;
 }
-.dataCard{
-  align-items: center;
 
-  width: 300px;
-  border:solid  2px black;
-  margin: 5px;
-  margin-left:40vw ;
+.body{
+  width: 50vw;
+  height: 75vh;
+  margin-left:25%;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 @keyframes App-logo-spin {
   from {
