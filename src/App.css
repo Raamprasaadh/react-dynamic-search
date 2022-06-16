@@ -27,11 +27,16 @@
 .App-link {
   color: #61dafb;
 }
-
+.dataCard{
+  align-items: center;
+  border:solid  2px black;
+  margin: 5px;
+  border-radius: 8%;
+}
 .body{
-  width: 50vw;
-  height: 75vh;
-  margin-left:25%;
+  width: 45vw;
+  height: 70vh;
+  margin-left:30%;
   overflow-x: hidden;
   overflow-y: auto;
 }
