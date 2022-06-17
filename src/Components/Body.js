@@ -11,8 +11,7 @@ function Body(props) {
             <p className="title">{`Title: ${data.title}`}</p>
             {/** movestyle to class name and add styles// suggestion */}
             <p
-              className={`completed`}
-              style={data.completed ? { color: "green" } : { color: "red" }}
+              className={`${data.completed?"green":"red"}`}
             >{`isCompleted: ${data.completed.toString()}`}</p>
           </div>
         </div>

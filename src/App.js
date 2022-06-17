@@ -20,7 +20,14 @@ function App() {
   
   React.useEffect(() => {
     // get details and store in the data using setData
-    //move this axios get to a separate function //suggestion
+    getData();
+  }, []); // to fetch details on first time only
+
+  useEffect(() => {
+    setData(dataCopy.slice(0, numOfTxns));
+  }, [numOfTxns]); // shouldComponent update
+
+  const getData= ()=>{
     axios
       .get("https://jsonplaceholder.typicode.com/todos")
       .then((res) => {
@@ -30,12 +37,7 @@ function App() {
       .catch((err) => {
         console.error("error", err);
       });
-  }, []); // to fetch details on first time only
-
-  useEffect(() => {
-    setData(dataCopy.slice(0, numOfTxns));
-  }, [numOfTxns]); // shouldComponent update
-
+  }
   const loadMoreData = () => {
     if (dataCopy.length !== numOfTxns) {
       dataCopy.length - numOfTxns > 5
@@ -46,13 +48,30 @@ function App() {
   
   const search = () => {
     //there should be validation for id and 
-    //filter using multiple json keys//suggestion
-    var res = dataCopy.filter((data) => {
+    //multi condition filter
+    var res;
+    if(fc.id !=="" && fc.title!== ""){
+    res = dataCopy.filter((data) => {
       return (
         data.id.toString() === fc.id &&
         data.title.toLowerCase() === fc.title.toLowerCase()
       );
     });
+  }
+  else if(fc.id !=="" && fc.title === ""){
+    res = dataCopy.filter((data) => {
+      return (
+        data.id.toString() === fc.id
+      );
+    });
+  }
+  else if(fc.id ==="" && fc.title !== ""){
+    res = dataCopy.filter((data) => {
+      return (
+        data.title.toLowerCase() === fc.title.toLowerCase()
+      );
+    });
+  }
     setData(res);
   };
 
@@ -83,8 +102,8 @@ function App() {
         </div>
       </div>
       <Body data={data} />
-      {(dataCopy.length <= numOfTxns)&&<button
-        disabled={dataCopy.length <= numOfTxns}
+      {(numOfTxns < dataCopy.length )&&<button
+        
         style={
           dataCopy.length <= numOfTxns ? { hidden: true } : { hidden: false }
         }
